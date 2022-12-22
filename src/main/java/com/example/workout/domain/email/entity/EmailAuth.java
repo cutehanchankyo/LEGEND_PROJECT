@@ -6,10 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 
 @Getter
 @Builder
@@ -36,7 +35,7 @@ public class EmailAuth {
         this.randomValue = uuid;
     }
 
-    public void increaseAttempCount(){
+    public void increaseAttemptCount(){
         this.attemptCount += 1;
     }
 }

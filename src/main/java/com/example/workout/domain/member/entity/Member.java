@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity @Table(name = "member")
+@Entity
 @Getter @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,19 +19,19 @@ public class Member {
     @Column(name = "member_idx", nullable = false)
     private Integer memberId;
 
-    @Column(name = "member_email", nullable = false, length = 20)
+    @Column(name = "member_email")
     private String email;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "number", unique = true, length = 10)
+    @Column(name = "number")
     private String number;
 
-    @Column(name = "name", unique = true, length = 5)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "role", length = 10)
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 

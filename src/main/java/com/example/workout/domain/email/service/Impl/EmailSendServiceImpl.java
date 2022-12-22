@@ -3,10 +3,9 @@ package com.example.workout.domain.email.service.Impl;
 import com.example.workout.domain.email.entity.EmailAuth;
 import com.example.workout.domain.email.exception.AuthCodeExpiredException;
 import com.example.workout.domain.email.exception.ManyRequestEmailAuthException;
-import com.example.workout.domain.email.exception.MisMatchAuthCodeException;
 import com.example.workout.domain.email.presentation.request.EmailSendDto;
 import com.example.workout.domain.email.repository.EmailAuthRepository;
-import com.example.workout.domain.member.exception.MemberNotFoundException;
+import com.example.workout.domain.email.service.EmailSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,13 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Objects;
 import java.util.Random;
 
 @Service
 @EnableAsync
 @RequiredArgsConstructor
-public class EmailSendServiceImpl {
+public class EmailSendServiceImpl implements EmailSendService {
 
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender mailSender;
@@ -53,7 +51,7 @@ public class EmailSendServiceImpl {
         }
 
         emailAuthEntity.updateRandomValue(authKey);
-        emailAuthEntity.increaseAttempCount();
+        emailAuthEntity.increaseAttemptCount();
 
         emailAuthRepository.save(emailAuthEntity);
         try{
@@ -65,19 +63,6 @@ public class EmailSendServiceImpl {
             mailSender.send(mimeMessage);
         } catch (MessagingException e){
             throw new AuthCodeExpiredException("메일 발송에 실패했습니다");
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void checkEmail(String email, String authKey){
-        EmailAuth emailAuthEntity = emailAuthRepository.findById(email)
-                .orElseThrow(() -> new MemberNotFoundException("유저를 찾을 수 없습니다."));
-
-    }
-
-    private void checkAuthKey(EmailAuth emailAuthEntity, String authKey){
-        if(!Objects.equals(emailAuthEntity.getRandomValue(), authKey)){
-            throw new MisMatchAuthCodeException("인증번호가 일치하지 않습니다.");
         }
     }
 }
