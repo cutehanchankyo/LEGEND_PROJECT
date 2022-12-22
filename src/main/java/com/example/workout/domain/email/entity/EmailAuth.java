@@ -16,7 +16,7 @@ import org.springframework.data.redis.core.RedisHash;
 @NoArgsConstructor
 @RedisHash(value = "emailAuth", timeToLive = 60 * 15)
 public class EmailAuth {
-    //test
+
     @Id
     private String email;
 

@@ -4,6 +4,7 @@ import com.example.workout.domain.email.entity.EmailAuth;
 import com.example.workout.domain.email.exception.MisMatchAuthCodeException;
 import com.example.workout.domain.email.exception.NotVerifyEmailException;
 import com.example.workout.domain.email.repository.EmailAuthRepository;
+import com.example.workout.domain.member.exception.MisMatchPasswordException;
 import com.example.workout.domain.member.exception.RefreshTokenNotFoundException;
 import com.example.workout.domain.member.presentation.dto.request.ChangePasswordRequest;
 import com.example.workout.domain.member.presentation.dto.request.LoginRequest;
@@ -46,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다"));
         if(!passwordEncoder.matches(loginRequest.getPassword(), member.getPassword())){
-            throw new MisMatchAuthCodeException("비밀번호가 일치하지 않습니다.");
+            throw new MisMatchPasswordException("비밀번호가 일치하지 않습니다.");
         }
 
         String accessToken = tokenProvider.generatedAccessToken(loginRequest.getEmail());
@@ -60,7 +61,6 @@ public class MemberServiceImpl implements MemberService {
                 .expiredAt(tokenProvider.getExpiredAtToken(accessToken, jwtProperties.getAccessSecret()))
                 .build();
     }
-
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = Member.builder()
                 .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
                 .number(signUpRequest.getNumber())
                 .role(Role.from(signUpRequest.getRole()))

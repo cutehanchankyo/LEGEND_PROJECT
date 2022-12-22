@@ -1,5 +1,6 @@
-package com.example.workout.domain.member.presentation.controller;
+package com.example.workout.domain.member.presentation;
 
+import com.example.workout.domain.member.presentation.dto.request.ChangePasswordRequest;
 import com.example.workout.domain.member.presentation.dto.request.LoginRequest;
 import com.example.workout.domain.member.presentation.dto.request.SignUpRequest;
 import com.example.workout.domain.member.presentation.dto.response.MemberLoginResponse;
@@ -30,5 +31,11 @@ public class MemberController {
     public ResponseEntity<MemberLoginResponse> login(@RequestBody LoginRequest loginRequest){
         MemberLoginResponse data = memberService.login(loginRequest);
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @PatchMapping("/change-pw")
+    public ResponseEntity<Void> changePassword(@RequestBody @Validated ChangePasswordRequest changePasswordRequest){
+        memberService.changePassword(changePasswordRequest);
+        return ResponseEntity.noContent().build();
     }
 }

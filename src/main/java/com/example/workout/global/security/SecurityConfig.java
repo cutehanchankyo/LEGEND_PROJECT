@@ -42,9 +42,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/member/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/email/send").permitAll()
-                .antMatchers(HttpMethod.HEAD, "/email").permitAll()
-                .antMatchers("/teacher/notice/**").hasAuthority("TEACHER")
-                .antMatchers("/student/notice/**").hasAuthority("STUDENT")
+                .antMatchers(HttpMethod.HEAD, "/email/**").permitAll()
                 .anyRequest().authenticated();
         http
                 .sessionManagement()
