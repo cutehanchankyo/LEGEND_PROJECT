@@ -4,6 +4,7 @@ import com.example.workout.domain.member.presentation.dto.request.ChangePassword
 import com.example.workout.domain.member.presentation.dto.request.LoginRequest;
 import com.example.workout.domain.member.presentation.dto.request.SignUpRequest;
 import com.example.workout.domain.member.presentation.dto.response.MemberLoginResponse;
+import com.example.workout.domain.member.presentation.dto.response.NewTokenResponse;
 import com.example.workout.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,5 +38,11 @@ public class MemberController {
     public ResponseEntity<Void> changePassword(@RequestBody @Validated ChangePasswordRequest changePasswordRequest){
         memberService.changePassword(changePasswordRequest);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<NewTokenResponse> reIssueToken(@RequestHeader("RefreshToken") String token){
+        NewTokenResponse reIssueToken = memberService.tokenReissue(token);
+        return new ResponseEntity<>(reIssueToken, HttpStatus.OK);
     }
 }
