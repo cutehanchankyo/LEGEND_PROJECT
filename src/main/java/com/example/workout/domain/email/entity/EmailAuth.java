@@ -38,4 +38,5 @@ public class EmailAuth {
     public void increaseAttemptCount(){
         this.attemptCount += 1;
     }
+
 }

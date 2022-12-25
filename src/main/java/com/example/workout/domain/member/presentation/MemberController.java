@@ -22,6 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> signUp(@RequestBody @Validated SignUpRequest signUpRequest){
         memberService.signUp(signUpRequest);
@@ -41,8 +42,9 @@ public class MemberController {
     }
 
     @PatchMapping
-    public ResponseEntity<NewTokenResponse> reIssueToken(@RequestHeader("RefreshToken") String token){
+    public ResponseEntity<NewTokenResponse> reIssueToken(@RequestHeader("RefreshToken") String token) {
         NewTokenResponse reIssueToken = memberService.tokenReissue(token);
         return new ResponseEntity<>(reIssueToken, HttpStatus.OK);
     }
+
 }

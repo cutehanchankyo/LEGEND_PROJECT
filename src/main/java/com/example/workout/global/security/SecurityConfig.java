@@ -40,9 +40,10 @@ public class SecurityConfig {
                 .csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/member/**").permitAll()
+                .antMatchers("/email/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/email/send").permitAll()
                 .antMatchers(HttpMethod.HEAD, "/email/**").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/member").permitAll()
                 .anyRequest().authenticated();
         http
                 .sessionManagement()
@@ -56,5 +57,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }

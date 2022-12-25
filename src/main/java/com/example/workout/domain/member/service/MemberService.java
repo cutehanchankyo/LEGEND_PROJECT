@@ -5,6 +5,7 @@ import com.example.workout.domain.member.presentation.dto.request.LoginRequest;
 import com.example.workout.domain.member.presentation.dto.request.SignUpRequest;
 import com.example.workout.domain.member.presentation.dto.response.MemberLoginResponse;
 import com.example.workout.domain.member.presentation.dto.response.NewTokenResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public interface MemberService {
 
