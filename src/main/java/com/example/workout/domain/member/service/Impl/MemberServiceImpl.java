@@ -102,6 +102,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+
     @Transactional(rollbackFor = Exception.class)
     public NewTokenResponse tokenReissue(String requestToken) {
         String email = tokenProvider.getUserEmail(requestToken, jwtProperties.getRefreshSecret());
